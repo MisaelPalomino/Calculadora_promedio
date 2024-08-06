@@ -1,0 +1,19 @@
+#contenido{
+    margin-top: 1%;
+    padding: 4%;
+}
+header{
+    background-color: black;
+}
+body{
+    background-color: rgb(255, 153, 0);
+}
+.xd{
+    background-color: black;
+    color: white;
+    border: 0px;
+}
+.xd:hover{
+    background-color: rgb(73, 72, 72);
+    border: 0px;
+}

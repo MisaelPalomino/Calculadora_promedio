@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="diseño.css">
+    <link rel="icon" href="img/ph.png" type="image/x-icon">
+    <title>Calculadora</title>
+    <style>
+        .imagen-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .imagen-container img {
+            display: none;
+            max-width: 500px; 
+        }
+    </style>
+</head>
+<body>
+    <header class="row justify-content-center">
+        <img src="img/Calculadora-SEXO.png" class="col-md-3">
+    </header> 
+    <audio id="backgroundMusic" src="img/mix_2m56s (audio-joiner.com).mp3" autoplay loop>
+    </audio>
+    <div class="row justify-content-center" id="contenido">
+        <div id="nota_x_curso" class="col-md-6">
+            <form id="formPonderado">
+                <h3 class="text-center">Calcular Ponderado por Curso</h3>
+                <h5>Nota 1</h5>
+                <input type="number" id="nota1" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje1" placeholder="porcentaje" class="form-control" required>
+
+                <h5>Nota 2</h5>
+                <input type="number" id="nota2" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje2" placeholder="porcentaje" class="form-control" required>
+
+                <h5>Nota 3</h5>
+                <input type="number" id="nota3" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje3" placeholder="porcentaje" class="form-control" required>
+
+                <h5>Nota 4</h5>
+                <input type="number" id="nota4" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje4" placeholder="porcentaje" class="form-control" required>
+
+                <h5>Nota 5</h5>
+                <input type="number" id="nota5" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje5" placeholder="porcentaje" class="form-control" required>
+
+                <h5>Nota 6</h5>
+                <input type="number" id="nota6" placeholder="nota" class="form-control" required>
+                <input type="number" id="porcentaje6" placeholder="porcentaje" class="form-control" required>
+                
+                <button type="button" class="btn btn-primary mt-3 xd" onclick="calcularPonderado()">Calcular Promedio Ponderado</button>
+                <div class="mt-3">
+                    <p><strong>Promedio Ponderado:</strong> <span id="resultadoPonderado">0</span></p>
+                </div>
+                <div id="imagenPonderado" class="imagen-container">
+                    <img id="imagenBuenaPonderado" src="img/1.png" alt="Bueno"/>
+                    <img id="imagenMaloPonderado" src="img/2.png" alt="Malo"/>
+                </div>
+            </form>
+        </div>
+
+        <div id="promedio_general" class="col-md-6">
+            <form id="formGeneral">
+                <h3 class="text-center">Calcular Promedio General</h3>
+                <div id="campos-container">
+                    <div class="">
+                        <input type="number" class="form-control mb-2" name="nota[]" placeholder="Nota" required>
+                        <input type="number" class="form-control mb-2" name="creditos[]" placeholder="Créditos" required>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" id="agregarCampo">Agregar más campos</button>
+                <button type="button" class="btn btn-primary xd" onclick="calcularPromedio()">Calcular Promedio</button>
+                <div class="mt-3">
+                    <p><strong>Promedio General:</strong> <span id="resultadoPromedio">0</span></p>
+                </div>
+                <div id="imagenPromedio" class="imagen-container">
+                    <img id="imagenBuenaPromedio" src="img/1.png" alt="Bueno"/>
+                    <img id="imagenMaloPromedio" src="img/2.png" alt="Malo"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agregarCampo').addEventListener('click', function () {
+            var container = document.getElementById('campos-container');
+            var newRow = document.createElement('div');
+            newRow.className = 'mb-3';
+            newRow.innerHTML = `
+                <input type="number" class="form-control mb-2" name="nota[]" placeholder="Nota" required>
+                <input type="number" class="form-control mb-2" name="creditos[]" placeholder="Créditos" required>
+            `;
+            container.appendChild(newRow);
+        });
+
+        function calcularPonderado() {
+            let totalPonderado = 0;
+            let totalPorcentajes = 0;
+            
+            for (let i = 1; i <= 6; i++) {
+                let nota = parseFloat(document.getElementById(`nota${i}`).value);
+                let porcentaje = parseFloat(document.getElementById(`porcentaje${i}`).value);
+                totalPonderado += (nota * porcentaje) / 100;
+                totalPorcentajes += porcentaje;
+            }
+
+            if (totalPorcentajes === 100) {
+                let resultado = totalPonderado.toFixed(2);
+                document.getElementById('resultadoPonderado').textContent = resultado;
+
+                if (totalPonderado >= 11) { 
+                    document.getElementById('imagenBuenaPonderado').style.display = 'block';
+                    document.getElementById('imagenMaloPonderado').style.display = 'none';
+                } else {
+                    document.getElementById('imagenBuenaPonderado').style.display = 'none';
+                    document.getElementById('imagenMaloPonderado').style.display = 'block';
+                }
+            } else {
+                alert('La suma de los porcentajes debe ser igual a 100.');
+                document.getElementById('resultadoPonderado').textContent = '0';
+                document.getElementById('imagenBuenaPonderado').style.display = 'none';
+                document.getElementById('imagenMaloPonderado').style.display = 'none';
+            }
+        }
+
+        function calcularPromedio() {
+            let notas = document.getElementsByName('nota[]');
+            let creditos = document.getElementsByName('creditos[]');
+            let sumaPonderada = 0;
+            let sumaCreditos = 0;
+
+            for (let i = 0; i < notas.length; i++) {
+                let nota = parseFloat(notas[i].value);
+                let credito = parseFloat(creditos[i].value);
+                sumaPonderada += nota * credito;
+                sumaCreditos += credito;
+            }
+
+            let promedio = sumaPonderada / sumaCreditos;
+            document.getElementById('resultadoPromedio').textContent = promedio.toFixed(2);
+
+            // Mostrar imagen según el promedio
+            if (promedio >= 11) { 
+                document.getElementById('imagenBuenaPromedio').style.display = 'block';
+                document.getElementById('imagenMaloPromedio').style.display = 'none';
+            } else {
+                document.getElementById('imagenBuenaPromedio').style.display = 'none';
+                document.getElementById('imagenMaloPromedio').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
